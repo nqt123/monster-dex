@@ -9,7 +9,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      monster: [],
+      monsters: [],
       searchField: ''
     }
   }
@@ -17,15 +17,20 @@ class App extends Component {
   componentDidMount() {
     fetch('https://jsonplaceholder.typicode.com/users')
       .then(response => response.json())
-      .then(users => this.setState({ monster: users }))
+      .then(monsters => this.setState({ monsters }))
   }
 
   render() {
+
+    const { monsters, searchField } = this.state;
+
+    const filteredMonster = monsters.filter(monster => monster.name.toLowerCase().includes(searchField.toLocaleLowerCase()));
+
     return (
       <div className="App">
         <input type='search' placeholder='Search Monster' onChange={e => this.setState({ searchField: e.target.value })
         } />
-        <CardList monster={this.state.monster} />
+        <CardList monster={filteredMonster} />
       </div>
     );
   }
